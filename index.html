@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ How Non-Chalant Are You? ✨</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f6f5f8;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            min-height: 300px;
+        }
+        .question-card {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .question-card.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question h3 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            margin: 0;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+        .option:hover {
+            background-color: #ff6b6b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(255, 107, 107, 0.2);
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            margin: 20px 0;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #ff6b6b;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        #result {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s;
+        }
+        #result h2 {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+        #score {
+            font-size: 36px;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .sparkle {
+            font-size: 24px;
+        }
+        .heart {
+            color: #ff6b6b;
+        }
+        #chart-container {
+            width: 100%;
+            height: 250px;
+            margin: 20px 0;
+        }
+        .signature {
+            text-align: right;
+            font-style: italic;
+            margin-top: 20px;
+            color: #ff6b6b;
+        }
+        .reset-btn {
+            background-color: #ff6b6b;
+            color: white;
+            font-size: 16px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.2);
+        }
+        .reset-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.3);
+        }
+        .question-number {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .result-emoji {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+        #description {
+            line-height: 1.5;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1><span class="sparkle">✨</span> How Non-Chalant Are You? <span class="sparkle">✨</span></h1>
+    
+    <div class="quiz-container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div id="quiz">
+        </div>
+    </div>
+    
+    <div id="result">
+        <h2>Your Friendship Non-Chalant Score</h2>
+        <div class="result-emoji" id="result-emoji"></div>
+        <div id="score"></div>
+        <p id="description"></p>
+        <div id="chart-container"></div>
+        <button class="reset-btn" id="reset-btn">Take Again</button>
+    </div>
+    
+    <p class="signature">i love bhavya chat <3</p>
+
+    <script>
+        const quizData = [
+            {
+                question: "Your bestie texts you that they got into their dream summer program!",
+                options: [
+                    { text: "OMGOMG GJGJGJGJ U ATE AND LEFT NO CRUMBS *calls them immediately*", points: 0 },
+                    { text: "OMG U COOKED THAT UP", points: 2 },
+                    { text: "I told ya so", points: 4 },
+                    { text: "cool", points: 5 }
+                ]
+            },
+            {
+                question: "Your friend cancels plans with you last minute for the third time",
+                options: [
+                    { text: "GIRL IM LITR KIDNAPPIN U THERE ATP 😡", points: 0 },
+                    { text: "bro this is the third time (skull emoji)", points: 2 },
+                    { text: "bruh", points: 4 },
+                    { text: "*doesn't respond to the text*", points: 5 }
+                ]
+            },
+            {
+                question: "Someone makes a tiktok hate account for you",
+                options: [
+                    { text: "report the account, comments on the post, and calls them out", points: 0 },
+                    { text: "reports account, calls them out, blocks them", points: 2 },
+                    { text: "reports account and blocks", points: 4 },
+                    { text: "reports account", points: 5 }
+                ]
+            },
+            {
+                question: "POV: you get asked out to prom",
+                options: [
+                    { text: "OMG YESSSSSSSSSS (potentially cries/screams in joy)", points: 0 },
+                    { text: "oh h3ll nahhhh *walks away*", points: 1 },
+                    { text: "sure", points: 3 },
+                    { text: "nah", points: 5 }
+                ]
+            },
+            {
+                question: "Your friend spills the spiciest tea about one of your friends",
+                options: [
+                    { text: "GIRL WHAT", points: 0 },
+                    { text: "that's crazy", points: 2 },
+                    { text: "(skull emoji)", points: 4 },
+                    { text: "oh", points: 5 }
+                ]
+            }
+        ];
+        function calculateScore(userResponses) {
+            let totalPoints = 0;
+            let maxPossiblePoints = 0;
+            let responseData = [];
+            for (let i = 0; i < userResponses.length; i++) {
+                const questionIndex = userResponses[i].questionIndex;
+                const answerIndex = userResponses[i].answerIndex;
+                if (questionIndex >= 0 && questionIndex < quizData.length) {
+                    const pointsForAnswer = quizData[questionIndex].options[answerIndex].points;
+                    totalPoints += pointsForAnswer;
+                    maxPossiblePoints += 5;
+                    responseData.push({
+                        question: `Q${questionIndex + 1}`,
+                        points: pointsForAnswer
+                    });
+                }
+            }
+            const percentageScore = (totalPoints / maxPossiblePoints) * 100;
+            let resultCategory, resultEmoji;
+            if (percentageScore < 20) {
+                resultCategory = "100% PRIMADONNA";
+                resultEmoji = "💅";
+            } else if (percentageScore < 40) {
+                resultCategory = "Expressive";
+                resultEmoji = "😊";
+            } else if (percentageScore < 60) {
+                resultCategory = "Average";
+                resultEmoji = "😊";
+            } else if (percentageScore < 80) {
+                resultCategory = "chill";
+                resultEmoji = "😎";
+            } else {
+                resultCategory = "non-chalant";
+                resultEmoji = "🤷";
+            }
+            return {
+                score: totalPoints,
+                maxScore: maxPossiblePoints,
+                percentage: percentageScore,
+                category: resultCategory,
+                emoji: resultEmoji,
+                responseData: responseData
+            };
+        }
+        function displayQuiz() {
+            const quizElement = document.getElementById('quiz');
+            quizElement.innerHTML = '';
+            quizData.forEach((questionData, questionIndex) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'question-card';
+                cardDiv.id = `question-${questionIndex}`;
+                if (questionIndex === 0) {
+                    cardDiv.classList.add('active');
+                }
+                const questionNumber = document.createElement('div');
+                questionNumber.className = 'question-number';
+                questionNumber.textContent = `Question ${questionIndex + 1} of ${quizData.length}`;
+                cardDiv.appendChild(questionNumber);
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                const questionTitle = document.createElement('h3');
+                questionTitle.textContent = questionData.question;
+                questionDiv.appendChild(questionTitle);
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                questionData.options.forEach((option, optionIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.textContent = option.text;
+                    optionDiv.dataset.questionIndex = questionIndex;
+                    optionDiv.dataset.optionIndex = optionIndex;
+                    optionDiv.addEventListener('click', function() {
+                        userSelections[questionIndex] = {
+                            questionIndex: questionIndex,
+                            answerIndex: optionIndex
+                        };
+                        updateProgressBar(questionIndex + 1);
+                        if (questionIndex < quizData.length - 1) {
+                            document.getElementById(`question-${questionIndex}`).classList.remove('active');
+                            document.getElementById(`question-${questionIndex + 1}`).classList.add('active');
+                        } else {
+                            const resultData = calculateScore(userSelections);
+                            showResults(resultData);
+                        }
+                    });
+                    
+                    optionsDiv.appendChild(optionDiv);
+                });
+                
+                questionDiv.appendChild(optionsDiv);
+                cardDiv.appendChild(questionDiv);
+                quizElement.appendChild(cardDiv);
+            });
+        }
+        function updateProgressBar(currentQuestion) {
+            const progressBar = document.getElementById('progress-bar');
+            const progress = (currentQuestion / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        function visualizeResults(resultData) {
+            const chartContainer = document.getElementById('chart-container');
+            chartContainer.innerHTML = '';
+            const maxHeight = 200;
+            const barWidth = 100 / resultData.responseData.length;
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', maxHeight + 50);
+            svg.style.overflow = 'visible';
+            resultData.responseData.forEach((data, index) => {
+                const barHeight = (data.points / 5) * maxHeight;
+                const xPosition = (index * barWidth) + '%';
+                const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                bar.setAttribute('x', xPosition);
+                bar.setAttribute('y', maxHeight - barHeight);
+                bar.setAttribute('width', (barWidth - 5) + '%');
+                bar.setAttribute('height', barHeight);
+                bar.setAttribute('fill', '#ff6b6b');
+                bar.setAttribute('rx', '8');
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', (index * barWidth + barWidth/2) + '%');
+                text.setAttribute('y', maxHeight + 20);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#333');
+                text.textContent = data.question;
+                const score = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                score.setAttribute('x', (index * barWidth + barWidth/2) + '%');
+                score.setAttribute('y', maxHeight - barHeight - 10);
+                score.setAttribute('text-anchor', 'middle');
+                score.setAttribute('fill', '#333');
+                score.textContent = data.points; 
+                svg.appendChild(bar);
+                svg.appendChild(text);
+                svg.appendChild(score);
+            });
+            
+            chartContainer.appendChild(svg);
+        }
+        function showResults(resultData) {
+            const resultElement = document.getElementById('result');
+            const scoreElement = document.getElementById('score');
+            const descriptionElement = document.getElementById('description');
+            const emojiElement = document.getElementById('result-emoji');
+            scoreElement.textContent = `${resultData.score}/${resultData.maxScore} (${Math.round(resultData.percentage)}%)`;
+            emojiElement.textContent = resultData.emoji;
+            let description = '';
+            switch(resultData.category) {
+                case "100% PRIMADONNA": // ChatGPT generated these descriptions (i am unfortunately not creative enough to write descriptions on my own (pensive emoji))
+                    description = "In friendships, you wear your heart on your sleeve! You express EVERYTHING you feel and your friends always know exactly where they stand with you. No filter, all feelings!";
+                    break;
+                case "Expressive":
+                    description = "You're open with your emotions in friendships, though you can keep it cool sometimes. Your friends appreciate that you're usually honest about how you feel!";
+                    break;
+                case "Average":
+                    description = "You've got a balanced approach to friendships - you show excitement when it matters but stay calm in drama. A good middle ground that keeps friendships steady!";
+                    break;
+                case "chill":
+                    description = "In your friendships, you keep it cool most of the time. Your friends might think you're hard to read, but they know you care in your own lowkey way.";
+                    break;
+                case "non-chalant":
+                    description = "Friend drama? What's that? You're the definition of unbothered. Your friends could throw you a surprise party or completely forget your birthday and your expression would be basically the same.";
+                    break;
+            }
+            descriptionElement.textContent = `${resultData.category}: ${description}`;
+            visualizeResults(resultData);
+            document.querySelector('.quiz-container').style.display = 'none';
+            resultElement.style.display = 'block';
+        }
+        function resetQuiz() {
+            userSelections = [];
+            document.getElementById('result').style.display = 'none';
+            document.querySelector('.quiz-container').style.display = 'block';
+            document.getElementById('progress-bar').style.width = '0%';
+            document.querySelectorAll('.question-card').forEach((card, index) => {
+                if (index === 0) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+        let userSelections = [];
+        document.addEventListener('DOMContentLoaded', function() {
+            displayQuiz();
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                resetQuiz();
+            });
+        });
+    </script>
+</body>
+</html>
