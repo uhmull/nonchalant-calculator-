@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ How Non-Chalant Are You? ✨</title>
+    <title>How Non-Chalant Are You? </title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -30,7 +30,6 @@
         }
         .question-card {
             display: none;
-            animation: fadeIn 0.5s;
         }
         .question-card.active {
             display: block;
@@ -89,7 +88,6 @@
             text-align: center;
             display: none;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s;
         }
         #result h2 {
             color: #ff6b6b;
@@ -100,9 +98,6 @@
             color: #ff6b6b;
             font-weight: bold;
             margin: 20px 0;
-        }
-        .sparkle {
-            font-size: 24px;
         }
         .heart {
             color: #ff6b6b;
@@ -154,7 +149,7 @@
     </style>
 </head>
 <body>
-    <h1><span class="sparkle">✨</span> How Non-Chalant Are You? <span class="sparkle">✨</span></h1>
+    <h1>How Non-Chalant Are You?</h1>
     
     <div class="quiz-container">
         <div class="progress-container">
@@ -165,15 +160,13 @@
     </div>
     
     <div id="result">
-        <h2>Your Friendship Non-Chalant Score</h2>
-        <div class="result-emoji" id="result-emoji"></div>
+        <h2>Your Non-Chalant Score</h2>
+        <div class="result-emoji" id="emoji"></div>
         <div id="score"></div>
         <p id="description"></p>
         <div id="chart-container"></div>
         <button class="reset-btn" id="reset-btn">Take Again</button>
     </div>
-    
-    <p class="signature">i love bhavya chat <3</p>
 
     <script>
         const quizData = [
@@ -208,7 +201,7 @@
                 question: "POV: you get asked out to prom",
                 options: [
                     { text: "OMG YESSSSSSSSSS (potentially cries/screams in joy)", points: 0 },
-                    { text: "oh h3ll nahhhh *walks away*", points: 1 },
+                    { text: "oh nahhhh *walks away*", points: 1 },
                     { text: "sure", points: 3 },
                     { text: "nah", points: 5 }
                 ]
@@ -243,7 +236,7 @@
             const percentageScore = (totalPoints / maxPossiblePoints) * 100;
             let resultCategory, resultEmoji;
             if (percentageScore < 20) {
-                resultCategory = "100% PRIMADONNA";
+                resultCategory = "100% Savage decodeURIComponent";
                 resultEmoji = "💅";
             } else if (percentageScore < 40) {
                 resultCategory = "Expressive";
@@ -369,20 +362,20 @@
             emojiElement.textContent = resultData.emoji;
             let description = '';
             switch(resultData.category) {
-                case "100% PRIMADONNA": // ChatGPT generated these descriptions (i am unfortunately not creative enough to write descriptions on my own (pensive emoji))
-                    description = "In friendships, you wear your heart on your sleeve! You express EVERYTHING you feel and your friends always know exactly where they stand with you. No filter, all feelings!";
+                case "100% PRIMADONNA": // ChatGPT generated the descriptions (not the code part though)
+                    description = "In friendships, you wear your heart on your sleeve! You express EVERYTHING you feel and your friends always know exactly where they stand with you. No filter, all feelings!"; // chatgpt wrote this discription
                     break;
                 case "Expressive":
-                    description = "You're open with your emotions in friendships, though you can keep it cool sometimes. Your friends appreciate that you're usually honest about how you feel!";
+                    description = "You're open with your emotions in friendships, though you can keep it cool sometimes. Your friends appreciate that you're usually honest about how you feel!"; // chatgpt wrote this discription
                     break;
                 case "Average":
-                    description = "You've got a balanced approach to friendships - you show excitement when it matters but stay calm in drama. A good middle ground that keeps friendships steady!";
+                    description = "You've got a balanced approach to friendships - you show excitement when it matters but stay calm in drama. A good middle ground that keeps friendships steady!"; // chatgpt wrote this discription
                     break;
                 case "chill":
-                    description = "In your friendships, you keep it cool most of the time. Your friends might think you're hard to read, but they know you care in your own lowkey way.";
+                    description = "In your friendships, you keep it cool most of the time. Your friends might think you're hard to read, but they know you care in your own lowkey way."; // chatgpt wrote this discription
                     break;
                 case "non-chalant":
-                    description = "Friend drama? What's that? You're the definition of unbothered. Your friends could throw you a surprise party or completely forget your birthday and your expression would be basically the same.";
+                    description = "Friend drama? What's that? You're the definition of unbothered. Your friends could throw you a surprise party or completely forget your birthday and your expression would be basically the same."; // chatgpt wrote this discription
                     break;
             }
             descriptionElement.textContent = `${resultData.category}: ${description}`;
